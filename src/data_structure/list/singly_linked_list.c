@@ -1,11 +1,6 @@
 #include "singly_linked_list.h"
 #include <stdlib.h>
 
-struct SLLNode {
-    int data;
-    struct SLLNode* next;
-};
-
 struct SLLNode* sll_create(int value)
 {
     struct SLLNode* new_node = (struct SLLNode*)malloc(sizeof(struct SLLNode));
