@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "../src/data_structure/list/singly_linked_list.h"
+#include <ccore/data_structure/list/singly_linked_list.h>
 
 void setUp(void) {} // this function runs before each test
 void tearDown(void) {} // this function runs after each test

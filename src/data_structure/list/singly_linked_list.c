@@ -1,4 +1,4 @@
-#include "singly_linked_list.h"
+#include <ccore/data_structure/list/singly_linked_list.h>
 #include <stdlib.h>
 
 struct SLLNode* sll_create(int value)

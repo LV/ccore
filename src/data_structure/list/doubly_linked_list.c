@@ -1,4 +1,4 @@
-#include "doubly_linked_list.h"
+#include <ccore/data_structure/list/doubly_linked_list.h>
 #include <stdlib.h>
 
 struct DLLNode {
