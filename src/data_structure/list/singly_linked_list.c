@@ -17,6 +17,11 @@ struct SLLNode* sll_create(int value)
     return new_node;
 }
 
+// inserts before `root`
+// e.g:
+// sll_node = [3, 2, 5]
+// value = 4
+// sll_insert(sll_node, 4) == [4, 3, 2, 5]
 struct SLLNode* sll_insert(struct SLLNode* root, int value)
 {
     if (root == NULL)
