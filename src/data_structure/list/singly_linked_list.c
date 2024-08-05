@@ -25,7 +25,7 @@ struct SinglyLinkedList* singly_linked_list_initialize(void)
     struct SinglyLinkedList* list = (struct SinglyLinkedList*)malloc(sizeof(struct SinglyLinkedList));
     if (list == NULL)
         return NULL; // malloc failure
-    
+
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;
@@ -42,7 +42,7 @@ struct SinglyLinkedList* singly_linked_list_initialize_with_value(int value)
     struct SinglyLinkedListNode* root = singly_linked_list_node_initialize(value);
     if (root == NULL)
         return NULL; // malloc failure
-    
+
     list->head = root;
     list->tail = root;
     list->size = 1;
@@ -78,9 +78,17 @@ void singly_linked_list_prepend(struct SinglyLinkedList *list, int value)
     if (new_node == NULL)
         return; // malloc failure
 
+    if (list->size == 0) {
+        list->head = new_node;
+        list->tail = new_node;
+        list->size = 1;
+        return;
+    }
+
+    list->size += 1;
+
     new_node->next = list->head;
     list->head = new_node;
-    list->size += 1;
 }
 
 void singly_linked_list_append(struct SinglyLinkedList *list, int value)
@@ -94,9 +102,17 @@ void singly_linked_list_append(struct SinglyLinkedList *list, int value)
     if (new_node == NULL)
         return; // malloc failure
 
+    if (list->size == 0) {
+        list->head = new_node;
+        list->tail = new_node;
+        list->size = 1;
+        return;
+    }
+
+    list->size += 1;
+
     list->tail->next = new_node;
     list->tail = new_node;
-    list->size += 1;
 }
 
 void singly_linked_list_remove_head(struct SinglyLinkedList* list)
@@ -104,11 +120,16 @@ void singly_linked_list_remove_head(struct SinglyLinkedList* list)
     if (list == NULL)
         return;
 
+    if (list->size == 0)
+        return;
+
+    list->size -= 1;
+
     struct SinglyLinkedListNode* to_remove = list->head;
     list->head = list->head->next;
+
     to_remove->next = NULL;
     free(to_remove);
-    list->size -= 1;
 }
 
 void singly_linked_list_remove_tail(struct SinglyLinkedList* list)
@@ -116,10 +137,15 @@ void singly_linked_list_remove_tail(struct SinglyLinkedList* list)
     if (list == NULL)
         return;
 
+    if (list->size == 0)
+        return;
+
     if (list->head == list->tail) {
         free(list->head);
         return;
     }
+
+    list->size -= 1;
 
     struct SinglyLinkedListNode* to_remove = list->tail;
     struct SinglyLinkedListNode* iter = list->head;
@@ -128,5 +154,4 @@ void singly_linked_list_remove_tail(struct SinglyLinkedList* list)
 
     list->tail = iter;
     free(to_remove);
-    list->size -= 1;
 }
