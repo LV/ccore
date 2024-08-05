@@ -130,10 +130,18 @@ void doubly_linked_list_remove_head(struct DoublyLinkedList* list)
     if (list->size == 0)
         return;
 
+    if (list->head == list->tail) {
+        list->head = NULL;
+        list->tail = NULL;
+        free(list->tail);
+        return;
+    }
+
     list->size -= 1;
 
     struct DoublyLinkedListNode* to_remove = list->head;
-    list->head = list->head->next;
+    list->head = to_remove->next;
+    list->head->prev = NULL;
 
     to_remove->next = NULL;
     to_remove->prev = NULL;
@@ -149,6 +157,8 @@ void doubly_linked_list_remove_tail(struct DoublyLinkedList* list)
         return;
 
     if (list->head == list->tail) {
+        list->head = NULL;
+        list->tail = NULL;
         free(list->head);
         return;
     }
@@ -158,6 +168,8 @@ void doubly_linked_list_remove_tail(struct DoublyLinkedList* list)
     struct DoublyLinkedListNode* to_remove = list->tail;
     list->tail = to_remove->prev;
     list->tail->next = NULL;
+
+    to_remove->next = NULL;
     to_remove->prev = NULL;
     free(to_remove);
 }
