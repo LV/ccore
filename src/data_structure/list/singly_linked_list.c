@@ -1,41 +1,126 @@
 #include <ccore/data_structure/list/singly_linked_list.h>
 #include <stdlib.h>
 
-struct SLLNode* sll_create(int value)
-{
-    struct SLLNode* new_node = (struct SLLNode*)malloc(sizeof(struct SLLNode));
-    if (new_node == NULL)
-        return NULL; // memalloc failure
+// [TODO]: Find better ways to alert the user of malloc failures
 
-    new_node->data = value;
-    new_node->next = NULL;
-    return new_node;
+struct SinglyLinkedListNode* singly_linked_list_node_initialize(int value)
+{
+    struct SinglyLinkedListNode* node = (struct SinglyLinkedListNode*)malloc(sizeof(struct SinglyLinkedListNode));
+    if (node == NULL)
+        return NULL; // malloc failure
+
+    node->data = value;
+    node->next = NULL;
+    return node;
 }
 
-// inserts before `root`
-// e.g:
-// sll_node = [3, 2, 5]
-// value = 4
-// sll_insert(sll_node, 4) == [4, 3, 2, 5]
-struct SLLNode* sll_insert(struct SLLNode* root, int value)
+void singly_linked_list_node_destroy(struct SinglyLinkedListNode* node)
 {
-    if (root == NULL)
-        return sll_create(value);
-
-    struct SLLNode* new_node = sll_create(value);
-    if (new_node == NULL)
-        return root; // memalloc failure
-
-    new_node->next = root;
-    return new_node;
+    node->next = NULL;
+    free(node);
 }
 
-struct SLLNode* sll_delete(struct SLLNode* root)
+struct SinglyLinkedList* singly_linked_list_initialize(void)
 {
-    if (root == NULL)
-        return NULL;
+    struct SinglyLinkedList* list = (struct SinglyLinkedList*)malloc(sizeof(struct SinglyLinkedList));
+    if (list == NULL)
+        return NULL; // malloc failure
+    
+    list->head = NULL;
+    list->tail = NULL;
+    return list;
+}
 
-    struct SLLNode* next = root->next;
-    free(root);
-    return next;
+struct SinglyLinkedList* singly_linked_list_initialize_with_value(int value)
+{
+
+    struct SinglyLinkedList* list = singly_linked_list_initialize();
+    if (list == NULL)
+        return NULL; // malloc failure
+
+    struct SinglyLinkedListNode* root = singly_linked_list_node_initialize(value);
+    if (root == NULL)
+        return NULL; // malloc failure
+    
+    list->head = root;
+    list->tail = root;
+    return list;
+}
+
+void singly_linked_list_destroy(struct SinglyLinkedList *list)
+{
+    if (list == NULL)
+        return;
+
+    struct SinglyLinkedListNode* curr = list->head;
+    struct SinglyLinkedListNode* next_node;
+    while (curr != NULL) {
+        next_node = curr->next;
+        curr->next = NULL;
+        free(curr);
+        curr = next_node;
+    }
+    list->head = NULL;
+    list->tail = NULL;
+    free(list);
+}
+
+void singly_linked_list_prepend(struct SinglyLinkedList *list, int value)
+{
+    if (list == NULL) {
+        list = singly_linked_list_initialize_with_value(value);
+        return; // could be final answer, or malloc failure
+    }
+
+    struct SinglyLinkedListNode* new_node = singly_linked_list_node_initialize(value);
+    if (new_node == NULL)
+        return; // malloc failure
+
+    new_node->next = list->head;
+    list->head = new_node;
+}
+
+void singly_linked_list_append(struct SinglyLinkedList *list, int value)
+{
+    if (list == NULL) {
+        list = singly_linked_list_initialize_with_value(value);
+        return; // could be final answer, or malloc failure
+    }
+
+    struct SinglyLinkedListNode* new_node = singly_linked_list_node_initialize(value);
+    if (new_node == NULL)
+        return; // malloc failure
+
+    list->tail->next = new_node;
+    list->tail = new_node;
+}
+
+void singly_linked_list_remove_head(struct SinglyLinkedList* list)
+{
+    if (list == NULL)
+        return;
+
+    struct SinglyLinkedListNode* to_remove = list->head;
+    list->head = list->head->next;
+    to_remove->next = NULL;
+    free(to_remove);
+}
+
+void singly_linked_list_remove_tail(struct SinglyLinkedList* list)
+{
+    if (list == NULL)
+        return;
+
+    if (list->head == list->tail) {
+        free(list->head);
+        return;
+    }
+
+    struct SinglyLinkedListNode* to_remove = list->tail;
+    struct SinglyLinkedListNode* iter = list->head;
+    while(iter->next != to_remove)
+        iter = iter->next;
+
+    list->tail = iter;
+    free(to_remove);
 }
