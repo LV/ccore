@@ -40,8 +40,10 @@ struct SinglyLinkedList* singly_linked_list_initialize_with_value(int value)
         return NULL; // malloc failure
 
     struct SinglyLinkedListNode* root = singly_linked_list_node_initialize(value);
-    if (root == NULL)
+    if (root == NULL) {
+        free(list);
         return NULL; // malloc failure
+    }
 
     list->head = root;
     list->tail = root;
