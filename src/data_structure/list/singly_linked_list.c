@@ -28,6 +28,7 @@ struct SinglyLinkedList* singly_linked_list_initialize(void)
     
     list->head = NULL;
     list->tail = NULL;
+    list->size = 0;
     return list;
 }
 
@@ -44,6 +45,7 @@ struct SinglyLinkedList* singly_linked_list_initialize_with_value(int value)
     
     list->head = root;
     list->tail = root;
+    list->size = 1;
     return list;
 }
 
@@ -78,6 +80,7 @@ void singly_linked_list_prepend(struct SinglyLinkedList *list, int value)
 
     new_node->next = list->head;
     list->head = new_node;
+    list->size += 1;
 }
 
 void singly_linked_list_append(struct SinglyLinkedList *list, int value)
@@ -93,6 +96,7 @@ void singly_linked_list_append(struct SinglyLinkedList *list, int value)
 
     list->tail->next = new_node;
     list->tail = new_node;
+    list->size += 1;
 }
 
 void singly_linked_list_remove_head(struct SinglyLinkedList* list)
@@ -104,6 +108,7 @@ void singly_linked_list_remove_head(struct SinglyLinkedList* list)
     list->head = list->head->next;
     to_remove->next = NULL;
     free(to_remove);
+    list->size -= 1;
 }
 
 void singly_linked_list_remove_tail(struct SinglyLinkedList* list)
@@ -123,4 +128,5 @@ void singly_linked_list_remove_tail(struct SinglyLinkedList* list)
 
     list->tail = iter;
     free(to_remove);
+    list->size -= 1;
 }

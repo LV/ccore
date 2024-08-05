@@ -1,6 +1,8 @@
 #ifndef SINGLY_LINKED_LIST_H
 #define SINGLY_LINKED_LIST_H
 
+#include <stddef.h>
+
 struct SinglyLinkedListNode {
     int data;
     struct SinglyLinkedListNode* next;
@@ -9,6 +11,7 @@ struct SinglyLinkedListNode {
 struct SinglyLinkedList {
     struct SinglyLinkedListNode* head;
     struct SinglyLinkedListNode* tail;
+    size_t size;
 };
 
 // Node functions
