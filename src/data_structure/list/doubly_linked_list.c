@@ -61,6 +61,7 @@ void doubly_linked_list_destroy(struct DoublyLinkedList *list)
     while (curr != NULL) {
         next_node = curr->next;
         curr->next = NULL;
+        curr->prev = NULL;
         free(curr);
         curr = next_node;
     }
